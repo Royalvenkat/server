@@ -1,23 +1,34 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
+const PORT = 3000;
 
-// Enable CORS for all routes
-app.use(cors());
+// Use CORS middleware
+app.use(cors({
+  origin: 'http://localhost:3001', // Allow only your React app
+  methods: ['GET', 'POST', 'OPTIONS'], // Allow these methods
+  allowedHeaders: ['Content-Type', 'Authorization'], // Add any custom headers you plan to use
+}));
+app.use(express.json());
 
-app.get('/', (req, res) => {
-  res.send('Hello, world!');
-});
+let users = [
+  { id: 1, name: 'John Doe' },
+  { id: 2, name: 'Jane Doe' },
+];
 
+// Get all users
 app.get('/api/users', (req, res) => {
-  const users = [
-    { id: 1, name: 'John Doe' },
-    { id: 2, name: 'Jane Doe' }
-  ];
   res.json(users);
 });
 
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+// Create a new user
+app.post('/api/users', (req, res) => {
+  const newUser = req.body;
+  users.push(newUser);
+  res.status(201).json(newUser); // Return the created user
+});
+
+// Start server
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
