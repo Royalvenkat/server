@@ -1,16 +1,14 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
-const port = 3000;
 
-// Middleware to parse JSON data
-app.use(express.json());
+// Enable CORS for all routes
+app.use(cors());
 
-// Sample route
 app.get('/', (req, res) => {
   res.send('Hello, world!');
 });
 
-// Sample API endpoint
 app.get('/api/users', (req, res) => {
   const users = [
     { id: 1, name: 'John Doe' },
@@ -19,7 +17,7 @@ app.get('/api/users', (req, res) => {
   res.json(users);
 });
 
-// Start the server
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+  console.log(`Server running on port ${port}`);
 });
